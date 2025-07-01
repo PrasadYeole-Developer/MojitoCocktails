@@ -1,10 +1,12 @@
 "use client";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { SplitText } from "gsap/all";
-import React from "react";
+import { ScrollTrigger, SplitText } from "gsap/all";
+import React, { useRef } from "react";
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Hero = () => {
+  let heroRef = useRef();
   useGSAP(() => {
     const heroSplit = new SplitText(".title", { type: "chars, words" });
     const paraSplit = new SplitText(".subtitle", { type: "lines" });
@@ -26,10 +28,22 @@ const Hero = () => {
       stagger: 0.05,
       delay: 1,
     });
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: "#hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      })
+      .to(".right-leaf", { y: 200 }, 0)
+      .to(".left-leaf", { y: -200 }, 0);
   }, []);
   return (
     <>
-      <section id="hero" className="noisy">
+      <section id="hero" className="noisy" ref={heroRef}>
         <h1 className="title">MOJITO</h1>
         <img
           src="/images/hero-left-leaf.png"
