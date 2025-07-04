@@ -1,5 +1,6 @@
 "use client";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { SplitText } from "gsap/all";
 import React from "react";
 
@@ -8,8 +9,7 @@ const About = () => {
     const titleSplit = SplitText.create("#about h2", {
       type: "words",
     });
-    const scrollTL = gsap
-      .timeline({
+    const scrollTL = gsap.timeline({
         scrollTrigger: {
           trigger: "#about",
           start: "top center",
