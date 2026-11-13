@@ -44,23 +44,33 @@ const Hero = () => {
       })
       .to(".right-leaf", { y: 200 }, 0)
       .to(".left-leaf", { y: -200 }, 0);
+
     const startVal = isMobile ? "top 50%" : "center 60%";
     const endVal = isMobile ? "120% top" : "bottom top";
 
-    const tl = gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: videoRef.current,
-          start: startVal,
-          end: endVal,
-          scrub: true,
-          pin: true,
-        },
-      })
-      .to(videoRef.current, {
-        currentTime: videoRef.current.duration,
-        ease: "none",
-      });
+    const initVideoTimeline = () => {
+      if (!videoRef.current) return;
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: videoRef.current,
+            start: startVal,
+            end: endVal,
+            scrub: true,
+            pin: true,
+          },
+        })
+        .to(videoRef.current, {
+          currentTime: videoRef.current.duration,
+          ease: "none",
+        });
+    };
+
+    if (videoRef.current && videoRef.current.readyState >= 1) {
+      initVideoTimeline();
+    } else if (videoRef.current) {
+      videoRef.current.addEventListener("loadedmetadata", initVideoTimeline, { once: true });
+    }
   }, []);
   return (
     <>
